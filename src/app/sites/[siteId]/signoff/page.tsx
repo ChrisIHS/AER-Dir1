@@ -1,3 +1,4 @@
+import { UploadForm } from "@/components/UploadForm";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge, Flash } from "@/components/ui";
@@ -138,15 +139,17 @@ export default async function SignoffPage({
         Req. 54 and 55 expect the lead assessor&apos;s professional seal or stamp and signature on the report. Upload the stamped, signed pages here; they go into the package&apos;s forms folder.
       </p>
       {(a.isAssessor || a.isLicenseeMember) && (
-        <form action={uploadDocument} className="card">
+        <>
+        <UploadForm action={uploadDocument} purpose="document" siteId={siteId} submitLabel="Upload">
           <input type="hidden" name="site_id" value={siteId} />
           <input type="hidden" name="kind" value="signed_forms" />
           <div className="row">
             <div><label htmlFor="sf-title">Title</label><input id="sf-title" name="title" placeholder="Stamped acknowledgement statements" /></div>
             <div><label htmlFor="sf-file">File</label><input id="sf-file" name="file" type="file" required /></div>
           </div>
-          <p><button type="submit">Upload</button> {d.bundle.documents.some((x) => x.kind === "signed_forms") && <Badge tone="green">uploaded</Badge>}</p>
-        </form>
+        </UploadForm>
+        {d.bundle.documents.some((x) => x.kind === "signed_forms") && <p><Badge tone="green">uploaded</Badge></p>}
+        </>
       )}
 
       {a.isLicenseeAdmin && (d.signoffInfo.care_susp_aband || d.signoffInfo.remediation_reclamation) && (

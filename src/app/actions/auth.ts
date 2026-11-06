@@ -3,11 +3,15 @@
 import { redirect } from "next/navigation";
 import { back } from "@/lib/flash";
 import { supabaseServer } from "@/lib/supabase/server";
-import { SITE_URL, str } from "./util";
+import { SITE_URL, str, strOrNull } from "./util";
 
 export async function signIn(fd: FormData) {
   const supabase = await supabaseServer();
-  const { error } = await supabase.auth.signInWithPassword({ email: str(fd, "email"), password: str(fd, "password") });
+  const { error } = await supabase.auth.signInWithPassword({
+    email: str(fd, "email"),
+    password: str(fd, "password"),
+    options: { captchaToken: strOrNull(fd, "cf-turnstile-response") ?? undefined },
+  });
   if (error) back("/login", { error: error.message });
   redirect("/sites");
 }
@@ -19,7 +23,11 @@ export async function signUp(fd: FormData) {
   const { error } = await supabase.auth.signUp({
     email: str(fd, "email"),
     password,
-    options: { data: { full_name: str(fd, "full_name") }, emailRedirectTo: `${SITE_URL}/auth/callback` },
+    options: {
+      data: { full_name: str(fd, "full_name") },
+      emailRedirectTo: `${SITE_URL}/auth/callback`,
+      captchaToken: strOrNull(fd, "cf-turnstile-response") ?? undefined,
+    },
   });
   if (error) back("/login", { error: error.message });
   back("/login", { ok: "Check your email and follow the link to confirm your account, then sign in." });

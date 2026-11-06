@@ -1,3 +1,4 @@
+import { Turnstile } from "@/components/Turnstile";
 import { Flash } from "@/components/ui";
 import { signIn, signUp } from "../actions/auth";
 
@@ -15,6 +16,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <input id="si-email" name="email" type="email" autoComplete="email" required />
           <label htmlFor="si-pw">Password</label>
           <input id="si-pw" name="password" type="password" autoComplete="current-password" required />
+          <Turnstile />
           <p><button type="submit">Sign in</button></p>
         </form>
         <form action={signUp} className="card">
@@ -26,6 +28,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <label htmlFor="su-pw">Password (10+ characters)</label>
           <input id="su-pw" name="password" type="password" autoComplete="new-password" minLength={10} required />
           <p className="sub">After confirming your email you will set up your organization: a licensee, a contractor, or an assessor firm.</p>
+          <Turnstile />
           <p><button type="submit">Create account</button></p>
         </form>
       </div>

@@ -9,6 +9,8 @@ const TYPES = {
   schedule: { key: "schedule", type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
 } as const;
 
+export const maxDuration = 30;
+
 /** Individual form downloads. Licensee staff and the lead assessor only; filenames say DRAFT until both statements are signed. */
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ siteId: string; file: string }> }) {
   const { siteId, file } = await params;

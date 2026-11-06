@@ -17,6 +17,4 @@ export const isUuid = (s: string): boolean => UUID.test(s);
 
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-export function safeFileName(name: string): string {
-  return name.replace(/[^A-Za-z0-9._-]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 120) || "file";
-}
+export { safeFileName } from "@/lib/uploads";

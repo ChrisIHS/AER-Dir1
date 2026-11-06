@@ -1,3 +1,4 @@
+import { UploadForm } from "@/components/UploadForm";
 import Link from "next/link";
 import { FileLink, Flash } from "@/components/ui";
 import { requireSiteAccess } from "@/lib/db/access";
@@ -86,7 +87,7 @@ export default async function RateSheetsPage({
       <p className="sub">Manage your reusable sheets in the <Link href="/library">rate library</Link>.</p>
 
       <h2>Upload a rate sheet</h2>
-      <form action={uploadRateSheet} className="card">
+      <UploadForm action={uploadRateSheet} purpose="rate_sheet" siteId={siteId} submitLabel="Upload">
         <input type="hidden" name="site_id" value={siteId} />
         <div className="row">
           <div><label htmlFor="title">Title</label><input id="title" name="title" required /></div>
@@ -102,8 +103,7 @@ export default async function RateSheetsPage({
         )}
         <label htmlFor="file">File (PDF, Word, Excel, CSV or image; up to 25 MB)</label>
         <input id="file" name="file" type="file" required />
-        <p><button type="submit">Upload</button></p>
-      </form>
+      </UploadForm>
     </>
   );
 }

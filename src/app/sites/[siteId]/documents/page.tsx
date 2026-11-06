@@ -1,3 +1,4 @@
+import { UploadForm } from "@/components/UploadForm";
 import Link from "next/link";
 import { FileLink, Flash } from "@/components/ui";
 import { requireSiteAccess } from "@/lib/db/access";
@@ -69,7 +70,7 @@ export default async function DocumentsPage({
       )}
 
       <h2>Upload a document</h2>
-      <form action={uploadDocument} className="card">
+      <UploadForm action={uploadDocument} purpose="document" siteId={siteId} submitLabel="Upload">
         <input type="hidden" name="site_id" value={siteId} />
         <div className="row">
           <div>
@@ -90,8 +91,7 @@ export default async function DocumentsPage({
         </div>
         <label htmlFor="file">File (PDF, Word, Excel, CSV or image; up to 25 MB)</label>
         <input id="file" name="file" type="file" required />
-        <p><button type="submit">Upload</button></p>
-      </form>
+      </UploadForm>
     </>
   );
 }

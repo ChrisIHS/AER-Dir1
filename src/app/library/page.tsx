@@ -1,3 +1,4 @@
+import { UploadForm } from "@/components/UploadForm";
 import { Badge, Flash } from "@/components/ui";
 import { requireMembership } from "@/lib/db/access";
 import { applyLibrarySheet, deleteLibrarySheet, uploadLibrarySheet } from "../actions/phase3";
@@ -73,7 +74,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
       )}
 
       <h2>Add to the library</h2>
-      <form action={uploadLibrarySheet} className="card">
+      <UploadForm action={uploadLibrarySheet} purpose="library" submitLabel="Add">
         {memberships.length > 1 ? (
           <>
             <label htmlFor="org_id">Organization</label>
@@ -97,8 +98,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
         <input id="notes" name="notes" />
         <label htmlFor="file">File (PDF, Word, Excel, CSV or image; up to 25 MB)</label>
         <input id="file" name="file" type="file" required />
-        <p><button type="submit">Add</button></p>
-      </form>
+      </UploadForm>
     </>
   );
 }

@@ -5,7 +5,8 @@ import { requireMembership, requireSiteAccess } from "@/lib/db/access";
 import { loadSiteBundle } from "@/lib/db/load";
 import { OFFICER_STATEMENT, OFFICER_STATEMENT_VERSION } from "@/lib/declaration";
 import { back } from "@/lib/flash";
-import { checkFile } from "./fileChecks";
+import { pathBelongsTo, validateUpload } from "@/lib/uploads";
+import { verifyUploadedObject } from "@/lib/uploadsServer";
 import { isUuid, safeFileName, str, strOrNull } from "./util";
 
 // ------------------------------------------------------------------ organization rate library
@@ -14,13 +15,18 @@ export async function uploadLibrarySheet(fd: FormData) {
   const path = "/library";
   const orgId = str(fd, "org_id");
   if (!memberships.some((m) => m.org.id === orgId)) back(path, { error: "Choose one of your organizations." });
-  const file = checkFile(fd, path);
+  // The browser already uploaded the file through a signed URL; confirm it arrived and is where it should be.
+  const objectPath = str(fd, "object_path");
+  const problem = validateUpload(str(fd, "file_name"), 1);
+  if (problem && !/empty/.test(problem)) back(path, { error: problem });
+  if (!pathBelongsTo(objectPath, { orgId, library: true })) back(path, { error: "That upload doesn't belong to your library." });
+  const gone = await verifyUploadedObject(objectPath);
+  if (gone) back(path, { error: gone });
   const title = str(fd, "title");
-  if (!title) back(path, { error: "Give the rate sheet a title." });
-
-  const objectPath = `${orgId}/library/${crypto.randomUUID()}-${safeFileName(file.name)}`;
-  const { error: upErr } = await supabase.storage.from("site-files").upload(objectPath, file, { contentType: file.type || undefined });
-  if (upErr) back(path, { error: `Upload failed: ${upErr.message}` });
+  if (!title) {
+    await supabase.storage.from("site-files").remove([objectPath]);
+    back(path, { error: "Give the rate sheet a title." });
+  }
 
   const discount = str(fd, "discount_type");
   const { error } = await supabase.from("rate_library").insert({

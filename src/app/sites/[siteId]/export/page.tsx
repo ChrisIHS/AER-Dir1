@@ -7,6 +7,9 @@ import { formatCad } from "@/lib/money";
 import { summarizeCosts } from "@/lib/costs";
 import { buildPackage } from "../../../actions/phase2";
 
+// Building the package fills four templates and downloads every uploaded file: allow a longer run on Vercel.
+export const maxDuration = 60;
+
 export default async function ExportPage({
   params,
   searchParams,
