@@ -1,0 +1,8 @@
+{
+  "name": "pg-harness",
+  "private": true,
+  "type": "module",
+  "description": "Runs the migrations, seed and database tests on an embedded Postgres, no Docker. Not a substitute for `supabase test db` (Supabase's auth/storage schemas are stubbed).",
+  "scripts": { "test": "node run.mjs" },
+  "dependencies": { "embedded-postgres": "^18.0.0-beta.1", "pg": "^8.13.0" }
+}
