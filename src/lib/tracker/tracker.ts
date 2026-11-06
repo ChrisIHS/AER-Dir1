@@ -118,9 +118,9 @@ export function computeTracker(inp: TrackerInput): TrackerItem[] {
       : manual.costFormsGenerated ? "Forms generated." : "All workstreams approved; forms not yet generated.",
   });
 
-  // g.iii Acknowledgement statements (lead assessor)
-  const needRem = ctx.workstreams.esa_remediation.applicable || ctx.workstreams.reclamation.applicable;
-  const done = [manual.signoffs.care_susp_aband, needRem ? manual.signoffs.remediation_reclamation : true];
+  // g.iii Acknowledgement statements (lead assessor). Req. 58(g)(iii) lists both statements, and the database
+  // locks the assessment only when both are signed, so both are always required.
+  const done = [manual.signoffs.care_susp_aband, manual.signoffs.remediation_reclamation];
   items.push({
     ref: "g.iii", title: "Acknowledgement Statements (lead assessor)", req: "Req. 58(g)(iii), 52-57", owner: owners.leadAssessor,
     status: done.every(Boolean) ? "green" : done.some(Boolean) ? "amber" : "red",

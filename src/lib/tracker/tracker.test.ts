@@ -142,6 +142,17 @@ describe("completeness tracker (Req. 58)", () => {
       expect(get(computeTracker(inp), "g.iii").status).toBe(rag);
     });
 
+    it("both statements are required even when remediation and reclamation do not apply", () => {
+      const inp = input({}, (c) => {
+        c.workstreams.esa_remediation.applicable = false;
+        c.workstreams.reclamation.applicable = false;
+      });
+      inp.manual.signoffs = { care_susp_aband: true, remediation_reclamation: false };
+      const g = get(computeTracker(inp), "g.iii");
+      expect(g.status).toBe("amber");
+      expect(g.detail).toBe("Signed 1 of 2.");
+    });
+
     it("owner of the acknowledgement statements is the lead assessor", () => {
       expect(get(computeTracker(input()), "g.iii").owner).toBe("Lead Assessor");
     });
