@@ -3,17 +3,19 @@ import { Flash } from "@/components/ui";
 import { requireUser } from "@/lib/db/access";
 import { createOrganization } from "../actions/sites";
 
-export default async function OnboardingPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+export default async function OnboardingPage({ searchParams }: { searchParams: Promise<{ error?: string; new?: string }> }) {
   const { supabase, user } = await requireUser();
   const { count } = await supabase.from("org_members").select("org_id", { count: "exact", head: true }).eq("user_id", user.id);
-  if ((count ?? 0) > 0) redirect("/sites");
-  const { error } = await searchParams;
+  const { error, new: another } = await searchParams;
+  // An account that already has an organization only comes here deliberately, to add another (limit: 3).
+  if ((count ?? 0) > 0 && another !== "1") redirect("/sites");
   return (
     <>
-      <h1>Set up your organization</h1>
+      <h1>{another === "1" ? "Add another organization" : "Set up your organization"}</h1>
       <p className="sub">Everything you enter belongs to your organization and is isolated from other organizations. Others can only see a site you have been granted access to.</p>
       <Flash error={error} />
       <form action={createOrganization} className="card">
+        <input type="hidden" name="another" value={another === "1" ? "1" : ""} />
         <label htmlFor="name">Organization name</label>
         <input id="name" name="name" required />
         <label htmlFor="kind">We are a…</label>

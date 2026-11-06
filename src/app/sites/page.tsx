@@ -170,6 +170,11 @@ export default async function SitesPage({ searchParams }: { searchParams: Promis
             <span className="sub">Organization ID, to give a licensee who is granting you access:</span> <span className="mono">{m.org.id}</span>
           </p>
         ))}
+        {memberships.length < 3 && (
+          <p className="sub" style={{ marginBottom: 0 }}>
+            Need a different role (for example a licensee as well as a contractor)? <Link href="/onboarding?new=1">Add another organization</Link>.
+          </p>
+        )}
       </div>
     </>
   );

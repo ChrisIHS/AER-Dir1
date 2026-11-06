@@ -9,10 +9,11 @@ import { isUuid, str, strOrNull } from "./util";
 export async function createOrganization(fd: FormData) {
   // requireUser(), not requireMembership(): brand-new users have no organization yet.
   const { supabase } = await requireUser();
+  const here = str(fd, "another") === "1" ? "/onboarding?new=1" : "/onboarding";
   const kind = str(fd, "kind");
-  if (!["licensee", "contractor", "assessor_firm"].includes(kind)) back("/onboarding", { error: "Choose an organization type." });
+  if (!["licensee", "contractor", "assessor_firm"].includes(kind)) back(here, { error: "Choose an organization type." });
   const { error } = await supabase.rpc("create_organization", { p_name: str(fd, "name"), p_kind: kind, p_ba_id: strOrNull(fd, "ba_id") });
-  if (error) back("/onboarding", { error: error.message });
+  if (error) back(here, { error: error.message });
   redirect("/sites");
 }
 
