@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
-  const isPublic = path.startsWith("/login") || path.startsWith("/auth") || path === "/api/health";
+  const isPublic = path.startsWith("/login") || path.startsWith("/auth") || path === "/api/health" || path === "/help";
 
   if (!user && !isPublic) {
     if (path.startsWith("/api/")) return NextResponse.json({ error: "Please sign in again." }, { status: 401 });

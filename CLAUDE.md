@@ -84,5 +84,8 @@ Copy `.env.example` to `.env.local` and fill it from `npx supabase status`.
 - Security headers are set in `next.config.ts` (no CSP yet). Long routes set `maxDuration` (export page 60 s, form downloads 30 s).
 - Production setup steps are in docs/DEPLOY.md. Never run `supabase/seed.sql` against production (known demo password).
 
+## User guide
+- `/help` (public, linked in the top nav and on the sign-in page) is the user manual: roles, getting started, the workflow step by step, the seven workstreams, every check with its Req. number, the tracker, the rate library, the package and a FAQ. **When you change a screen, role, rule or limit, update `src/app/help/page.tsx` in the same change.** `help.test.ts` fails if a registered rule, a workstream or a key screen name is missing from it, and checks that its links only point at real routes.
+
 ## Open decisions
 See `docs/PLAN.md` §8.

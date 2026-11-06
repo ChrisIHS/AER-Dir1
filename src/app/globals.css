@@ -75,3 +75,14 @@ legend { font-weight: 600; padding: 0 6px; }
 .scroll { overflow-x: auto; }
 .lines td input, .lines td select { min-width: 80px; }
 .lines td.wide input, .lines td.wide select { min-width: 190px; }
+
+.toc ul { margin: 6px 0 0; padding-left: 20px; columns: 2; column-gap: 32px; }
+.toc li { margin: 2px 0; }
+main h2[id] { scroll-margin-top: 16px; }
+main ol, main ul { padding-left: 22px; }
+main li { margin: 3px 0; }
+details { border-bottom: 1px solid var(--line); padding: 8px 0; }
+details:last-child { border-bottom: 0; }
+summary { cursor: pointer; font-weight: 600; }
+details p { margin: 8px 0 4px; }
+@media (max-width: 640px) { .toc ul { columns: 1; } }

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Turnstile } from "@/components/Turnstile";
 import { Flash } from "@/components/ui";
 import { signIn, signUp } from "../actions/auth";
@@ -8,6 +9,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
     <>
       <h1>CORE SSLA</h1>
       <p className="sub">Collect, review and package the information for an AER Directive 001 site-specific liability assessment.</p>
+      <p className="sub">New here? Read <Link href="/help">how it works</Link>.</p>
       <Flash error={error} ok={ok} />
       <div className="row">
         <form action={signIn} className="card">

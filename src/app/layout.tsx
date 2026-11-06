@@ -17,6 +17,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <header className="top">
           <nav>
             <Link className="brand" href="/sites">CORE SSLA</Link>
+            <Link href="/help">Help</Link>
             {user ? (
               <>
                 <Link href="/sites">Sites</Link>
